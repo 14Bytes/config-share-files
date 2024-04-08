@@ -1,2 +1,5 @@
 # ShU7i15
-Devops Shell Utils
+
+一些工作中用到的模板配置文件，附带纤细的配置注释内容。
+
+主要以 Shell 脚本居多，所以起名为 Shell Utils
