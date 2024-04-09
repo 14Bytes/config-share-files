@@ -64,5 +64,71 @@ function echo_error_git() {
   echo_error_basic "$1 git clone failed, please check if the network is reachable or try again"
 }
 
+# RM_Lock Function
+function  Rm_lock() {
+  case $Linux_Version in
+    *"CentOS"*)
+
+    ;;
+    *"OpenEuler"*)
+    ;;
+    *)
+      echo_error_basic "Unsupported system"
+    ;;
+  esac
+}
+
+# System Info Function
+function Sys_Info () {
+  case "$(uname -m)" in
+    *"arm64"* | *"aarch64"*)
+      Linux_architecture_Name="Linux-arm64"
+    ;;
+    *"x86_64"*)
+      Linux_architecture_Name="Linux-x86_64"
+    ;;
+    *)
+      echo_error_basic "Unsupported architecture"
+      exit 1
+    ;;
+  esac
+
+  case "$(cat /etc/*-release | head -n 3)" in
+    *"CentOS"* | *"centos"*)
+      Linux_Version="CentOS"
+
+    ;;
+    *"OpenEuler"* | *"openEuler"*)
+      Linux_Version="OpenEuler"
+    ;;
+    *)
+      echo_error_basic "Unsupported system"
+      echo -e "\033[1;33m\nPlease enter distribution Ubuntu[u] Debian[d] Centos[c] OpenEuler[o]\033[0m" && read -r input
+      case $input in
+        [uU])
+          Linux_Version="Ubuntu"
+          echo -e "\033[1;33m\nPlease enter the system version number [22.04] [21.10] [21.04] [20.10] [20.04] [19.10] [19.04] [18.10] [18.04] [16.04] [15.04] [14.04] [12.04]\033[0m" && read -r input
+          Linux_Version_Name=$input
+        ;;
+        [dD])
+          Linux_Version="Debian"
+          echo -e "\033[1;33m\nPlease enter the system version number [11] [10] [9] [8] [7]\033[0m" && read -r input
+          Linux_Version_Name=$input
+        ;;
+        [cC])
+          Linux_Version="CentOS"
+          echo -e "\033[1;33m\nPlease enter the system version number [9 Stream] [8 Stream] [8] [7] [6]\033[0m" && read -r input
+          Linux_Version_Name=$input
+        ;;
+        [oO])
+          Linux_Version="OpenEuler"
+          echo -e "\033[1;33m\nPlease enter the system version number [22.02] [22.02-sp1] [22.02-sp2]\033[0m" && read -r input
+          Linux_Version_Name=$input
+        ;;
+      esac
+    ;;
+  esac
+}
+
 # Main Function
 Banner
