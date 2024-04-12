@@ -6,15 +6,15 @@
 # Date: March 26, 2024
 #
 # Last Editor: J1n H4ng<jinhang@mail.14bytes.com>
-# Last Modified: April 09, 2024
+# Last Modified: April 12, 2024
 #
-# Description: Jenkins 打包发布 Java 项目脚本，包含清理旧的构建，
-#              同时拷贝新的构建的 supervisor 的配置文件到服务器上。
+# Description: Jenkins 打包发布 Java 项目脚本，包含清理旧的构建，同时拷贝 supervisor 的配置文件到服务器上。
 #
 
 # TODO: variables
 SERVER="${SERVER:-127.0.0.1}"
 DIR="${DIR:-/data}"
+CLEAN_OLD_BUILDS_URL="${CLEAN_OLD_BUILDS_URL:-https://raw.githubusercontent.com/14Bytes/ShU7i15/main/templates/Jenkins/clean-old-builds.sh}"
 
 # TODO: function errInfo()
 function errInfo() {
@@ -61,11 +61,21 @@ function buildSignalModule() {
 function cleanOldBuilds() {
   echo "Cleaning old builds for ${JOB_NAME}"
 
+  if [[ -f /data/scripts/clean-old-builds.sh ]]; then
+    git show "${CLEAN_OLD_BUILDS_URL}" > /data/scripts/clean-old-builds.sh
+  fi
+
+  ansible "${SERVER}" -m script \
+    -a "chdir=${DIR}/releases/${JOB_NAME}/${MODULE_NAME} /data/scripts/clean-old-builds.sh" \
+    -u nginx
+
   echo "Older packages have been successfully cleaned up"
 }
 
 # TODO: function checkApi()
 function checkApi() {
+  echo "Checking the connectivity of the api"
+
   echo "The connectivity of the api was successfully tested"
 }
 
