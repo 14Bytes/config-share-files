@@ -84,7 +84,7 @@ function main() {
   mkdir4Modules
   copySupervisorConfig
   echo "Start to deploy ${JOB_NAME}"
-  errInfo
+
   echo "The ${JOB_NAME} has been successfully deployed"
 }
 
