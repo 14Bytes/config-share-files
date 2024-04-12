@@ -14,7 +14,6 @@
 # TODO: variables
 SERVER="${SERVER:-127.0.0.1}"
 DIR="${DIR:-/data}"
-CLEAN_OLD_BUILDS_URL="${CLEAN_OLD_BUILDS_URL:-https://raw.githubusercontent.com/14Bytes/ShU7i15/main/templates/Jenkins/clean-old-builds.sh}"
 
 # TODO: function errInfo()
 function errInfo() {
@@ -62,7 +61,8 @@ function cleanOldBuilds() {
   echo "Cleaning old builds for ${JOB_NAME}"
 
   if [[ -f /data/scripts/clean-old-builds.sh ]]; then
-    git show "${CLEAN_OLD_BUILDS_URL}" > /data/scripts/clean-old-builds.sh
+    # TODO: git clone Jenkins/Utils 目录下的所有文件
+    echo "Git clone Jenkins/Utils 目录下的所有文件"
   fi
 
   ansible "${SERVER}" -m script \
@@ -81,11 +81,11 @@ function checkApi() {
 
 # TODO: function main()
 function main() {
+  mkdir4Modules
+  copySupervisorConfig
   echo "Start to deploy ${JOB_NAME}"
   errInfo
   echo "The ${JOB_NAME} has been successfully deployed"
 }
 
-mkdir4Modules
-copySupervisorConfig
 main
