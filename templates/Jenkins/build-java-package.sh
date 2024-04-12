@@ -13,29 +13,54 @@
 #
 
 # TODO: variables
+SERVER="${SERVER:-127.0.0.1}"
 DIR="${DIR:-/data}"
 
-# TODO: function mkdir4Module()
+# TODO: function errInfo()
+function errInfo() {
+  if [ "$SERVER" == "127.0.0.1" ]; then
+    echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m Disabled deploy ${JOB_NAME} project to Jenkins Server\n\033[0m"
+  fi
+}
+
+# TODO: function mkdir4Modules()
+function mkdir4Modules() {
+  echo "Making directory path 4 modules"
+
+  echo "Dir path has been successfully created"
+}
 
 # TODO: function copySupervisorConfig()
 function copySupervisorConfig() {
+  echo "Copying supervisor config 4 ${MODULE_NAME}"
   echo "The supervisor config 4 ${MODULE_NAME} has been successfully copied to the server"
 }
 
 # TODO: syncBuiltModule()
+function syncBuiltModule() {
+  echo "Syncing ${MODULE_NAME}"
+
+  echo "${MODULE_NAME} has been successfully synced"
+}
 
 # TODO: function buildAllModule()
 function buildAllModule() {
+  echo "Building all modules"
+
   echo "The all modules have been successfully built"
 }
 
 # TODO: function buildSignalModule()
 function buildSignalModule() {
+  echo "Building the signal module ${MODULE_NAME}"
+
   echo "The signal module ${MODULE_NAME} has been successfully built"
 }
 
 # TODO: function cleanOldBuilds()
 function cleanOldBuilds() {
+  echo "Cleaning old builds for ${JOB_NAME}"
+
   echo "Older packages have been successfully cleaned up"
 }
 
@@ -46,20 +71,11 @@ function checkApi() {
 
 # TODO: function main()
 function main() {
-  case "${MODULE_NAME}" in
-    "all")
-      cleanOldBuilds
-      BuildAllModule
-      syncBuiltModule
-    ;;
-    "*")
-      cleanOldBuilds
-      buildSignalModule
-      syncBuiltModule
-    ;;
-  esac
+  echo "Start to deploy ${JOB_NAME}"
+  errInfo
+  echo "The ${JOB_NAME} has been successfully deployed"
 }
 
-mkdir4Moduler
+mkdir4Modules
 copySupervisorConfig
 main
