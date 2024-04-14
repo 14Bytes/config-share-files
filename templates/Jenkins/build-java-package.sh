@@ -41,8 +41,14 @@ function findNotUsingPort() {
 
 # TODO: function copySupervisorConfig()
 function copySupervisorConfig() {
-  echo "Copying supervisor config 4 ${MODULE_NAME} with JMX monitor"
-  echo "Copying supervisor config 4 ${MODULE_NAME} without JMX monitor"
+  case ${ENABLE_JMX} in
+    "false")
+      echo "Copying supervisor config 4 ${MODULE_NAME} without JMX monitor"
+    ;;
+    "true")
+      echo "Copying supervisor config 4 ${MODULE_NAME} with JMX monitor"
+    ;;
+  esac
 
   echo "The supervisor config 4 ${MODULE_NAME} has been successfully copied to the server"
 }
@@ -64,6 +70,9 @@ function buildAllModule() {
 # TODO: function buildSignalModule()
 function buildSignalModule() {
   echo "Building the signal module ${MODULE_NAME}"
+
+  # TODO: change build signal module scripts
+  maven build "$1" -am
 
   echo "The signal module ${MODULE_NAME} has been successfully built"
 }
@@ -102,7 +111,7 @@ function main() {
       if [ "${MODULE_NAME}" == "all" ]; then
         buildAllModule
       else
-        buildSignalModule
+        buildSignalModule "${MODULE_NAME}"
       fi
     ;;
     "rollback")
