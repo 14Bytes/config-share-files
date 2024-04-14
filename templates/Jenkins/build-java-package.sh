@@ -15,6 +15,9 @@
 SERVER="${SERVER:-127.0.0.1}"
 DIR="${DIR:-/data}"
 
+# Enable JMX monitor 4 all project, not only 4 signal module
+ENABLE_JMX="${ENABLE_JMX:-false}"
+
 # TODO: function errInfo()
 function errInfo() {
   if [ "$SERVER" == "127.0.0.1" ]; then
@@ -29,9 +32,18 @@ function mkdir4Modules() {
   echo "Dir path has been successfully created"
 }
 
+# TODO: function findNotUsingPort()
+function findNotUsingPort() {
+  echo "Find port which is not in using 4 module"
+
+  echo "The port 4 ${MODULE_NAME} is "
+}
+
 # TODO: function copySupervisorConfig()
 function copySupervisorConfig() {
-  echo "Copying supervisor config 4 ${MODULE_NAME}"
+  echo "Copying supervisor config 4 ${MODULE_NAME} with JMX monitor"
+  echo "Copying supervisor config 4 ${MODULE_NAME} without JMX monitor"
+
   echo "The supervisor config 4 ${MODULE_NAME} has been successfully copied to the server"
 }
 
@@ -84,6 +96,19 @@ function main() {
   mkdir4Modules
   copySupervisorConfig
   echo "Start to deploy ${JOB_NAME}"
+
+  case "${METHOD}" in
+    "deploy")
+      if [ "${MODULE_NAME}" == "all" ]; then
+        buildAllModule
+      else
+        buildSignalModule
+      fi
+    ;;
+    "rollback")
+
+    ;;
+  esac
 
   echo "The ${JOB_NAME} has been successfully deployed"
 }
