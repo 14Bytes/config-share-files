@@ -20,61 +20,63 @@ DIR="${DIR:-/data}"
 #  fi
 #}
 
-function mkdir4Module() {
-  echo "mkdir 4 module"
-  ansible "${SERVER}" -m file -a "path=${DIR}/releases/${JOB_NAME} state=directory" -u nginx
-  mkdir -p ../deploy_tmp/"${JOB_NAME}"
-}
-
-function deploy() {
-  echo "Start deploy ${JOB_NAME} project to  ${SERVER}"
-  mkdir4Module
-  case "${MODULE_NAME}" in
-  "all")
-    echo "Building all modules in ${JOB_NAME} project"
-    mvn clean package -Dmaven.test.skip=true
-    echo "syncing Module and linking path"
-    ansible "${SERVER}" -m synchronize \
-      -a "src=../deploy_tmp/${JOB_NAME} dest=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/ \
-      compress=yes delete=yes recursive=yes dirs=yes archive=no" \
-      -u nginx
-    ansible "${SERVER}" -m file \
-      -a "src=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/${JOB_NAME} \
-      dest=${DIR}/content/${JOB_NAME} state=link" -u nginx
-    ansible "${SERVER}" -m shell \
-      -a "sudo supervisorctl restart ${JOB_NAME}-{${MODULE_NAME}}" \
-      -u nginx
-    ;;
-  "*")
-    echo "Building ${MODULE_NAME} module in ${JOB_NAME} project"
-    mvn clean package -Dmaven.test.skip=true -pl -am "${MODULE_NAME}"
-    echo "syncing Module and linking path"
-    ansible "${SERVER}" -m synchronize \
-      -a "src=../deploy_tmp/${JOB_NAME} dest=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/ \
-      compress=yes delete=yes recursive=yes dirs=yes archive=no" \
-      -u nginx
-    ansible "${SERVER}" -m file \
-      -a "src=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/${JOB_NAME} \
-      dest=${DIR}/content/${JOB_NAME} state=link" -u nginx
-    ansible "${SERVER}" -m shell \
-      -a "sudo supervisorctl restart ${JOB_NAME}-${MODULE_NAME}" \
-      -u nginx
-    ;;
-  esac
-}
-
-# TODO: function rollback()
-function rollback() {
-  echo "Rolling back ${JOB_NAME} project in ${SERVER} to ${ROLLBACK_VERSION}"
-}
-
 function main() {
+  mkdir4Project
   case "${METHOD}" in
     "deploy")
       deploy
     ;;
     "rollback")
       rollback
+    ;;
+  esac
+}
+
+function deploy() {
+  case "${MODULE_NAME}" in
+    "all")
+      buildAllModules
+    ;;
+    "*")
+      buildSignalModule
+    ;;
+  esac
+}
+
+function rollback() {
+  echo "rollback"
+}
+
+
+function buildAllModules() {
+  mvn clean package -Dmaven.test.skip=true
+  syncModulesAndLink
+  supervisordEnable
+}
+
+function buildSignalModule() {
+  mvn clean package -pl -am "${MODULE_NAME}" -Dmaven.test.skip=true
+  syncModulesAndLink
+  supervisordEnable
+}
+
+function mkdir4Project() {
+  ansible "${SERVER}" -m file -a "path=${DIR}/releases/${JOB_NAME} state=directory" -u nginx
+  mkdir -p ../deploy_tmp/"${JOB_NAME}"
+}
+
+function syncModulesAndLink() {
+  ansible "${SERVER}" -m synchronize -a "src=../deploy_tmp/${JOB_NAME} dest=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME} compress=yes delete=yes recursive=yes dirs=yes archive=no" -u nginx
+  ansible "${SERVER}" -m file -a "src=${DIR}/releases/${JOB_NAME}/${BUILD_NAME_DISPLAY} dest=${DIR}/content/${JOB_NAME} state=link" -u nginx
+}
+
+function supervisordEnable() {
+  case "${MODULE_NAME}" in
+    "all")
+      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-*" -u nginx
+    ;;
+    "*")
+      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-${MODULE_NAME}" -u nginx
     ;;
   esac
 }
