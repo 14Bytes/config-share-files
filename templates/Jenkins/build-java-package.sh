@@ -24,18 +24,24 @@ function errInfo() {
   fi
 }
 
+# TODO: function mkdir4Module()
+function mkdir4Module() {
+  echo "mkdir 4 module"
+}
+
 function deploy() {
   echo "Start deploy ${JOB_NAME} project to  ${SERVER}"
-case "${MODULE_NAME}" in
-"all")
-  echo "Building all modules in ${JOB_NAME} project"
-  mvn clean package -Dmaven.test.skip=true
-  ;;
-"*")
-  echo "Building ${MODULE_NAME} module in ${JOB_NAME} project"
-  mvn clean package -Dmaven.test.skip=true -pl -am "${MODULE_NAME}"
-  ;;
-esac
+  mkdir4Module
+  case "${MODULE_NAME}" in
+  "all")
+    echo "Building all modules in ${JOB_NAME} project"
+    mvn clean package -Dmaven.test.skip=true
+    ;;
+  "*")
+    echo "Building ${MODULE_NAME} module in ${JOB_NAME} project"
+    mvn clean package -Dmaven.test.skip=true -pl -am "${MODULE_NAME}"
+    ;;
+  esac
 }
 
 # TODO: function rollback()
