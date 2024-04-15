@@ -103,22 +103,24 @@ function checkApi() {
   echo "The connectivity of the api was successfully tested"
 }
 
+# TODO: function deploy()
+function deploy() {
+  echo "Deploying ${JOB_NAME} to ${SERVER}"
+}
+
+# TODO: function rollback()
+function rollback() {
+  echo "Rolling back ${JOB_NAME} in ${SERVER} to ${ROLLBACK_VERSION}"
+}
+
 # TODO: function main()
 function main() {
-  mkdir4Modules
-  copySupervisorConfig
-  echo "Start to deploy ${JOB_NAME}"
-
   case "${METHOD}" in
     "deploy")
-      if [ "${MODULE_NAME}" == "all" ]; then
-        buildAllModule
-      else
-        buildSignalModule "${MODULE_NAME}"
-      fi
+      deploy
     ;;
     "rollback")
-
+      rollback
     ;;
   esac
 
