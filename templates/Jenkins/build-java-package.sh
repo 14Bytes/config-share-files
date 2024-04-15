@@ -14,6 +14,10 @@
 SERVER="${SERVER:-127.0.0.1}"
 DIR="${DIR:-/data}"
 
+MOD_NAME_1=""
+MOD_NAME_2=""
+MOD_NAME_3=""
+
 function main() {
   mkdir4Project
   case "${METHOD}" in
@@ -67,7 +71,7 @@ function syncModulesAndLink() {
 function supervisordEnable() {
   case "${MODULE_NAME}" in
     "all")
-      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-{module1,module2,module3}" -u nginx
+      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-{${MOD_NAME_1},${MOD_NAME_2},${MOD_NAME_3}}" -u nginx
     ;;
     "*")
       ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-${MODULE_NAME}" -u nginx
