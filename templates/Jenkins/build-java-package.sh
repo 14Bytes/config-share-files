@@ -6,7 +6,7 @@
 # Date: March 26, 2024
 #
 # Last Editor: J1n H4ng<jinhang@mail.14bytes.com>
-# Last Modified: April 12, 2024
+# Last Modified: April 15, 2024
 #
 # Description: Jenkins 打包发布 Java 项目脚本，包含清理旧的构建，同时拷贝 supervisor 的配置文件到服务器上。
 #
@@ -18,16 +18,19 @@ DIR="${DIR:-/data}"
 # Enable JMX monitor 4 all project, not only 4 signal module
 ENABLE_JMX="${ENABLE_JMX:-false}"
 
-# TODO: function errInfo()
 function errInfo() {
   if [ "$SERVER" == "127.0.0.1" ]; then
     echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m Disabled deploy ${JOB_NAME} project to Jenkins Server\n\033[0m"
   fi
 }
 
-# TODO: function mkdir4Modules()
 function mkdir4Modules() {
   echo "Making directory path 4 modules"
+
+  ansible "${SERVER}" -m file \
+    -a "path=${DIR}/releases/${JOB_NAME} state=directory" -u nginx
+  ansible "${SERVER}" -m file \
+    -a "path=${DIR}/content/${JOB_NAME} state=directory" -u nginx
 
   echo "Dir path has been successfully created"
 }
@@ -53,27 +56,27 @@ function copySupervisorConfig() {
   echo "The supervisor config 4 ${MODULE_NAME} has been successfully copied to the server"
 }
 
-# TODO: syncBuiltModule()
-function syncBuiltModule() {
-  echo "Syncing ${MODULE_NAME}"
-
+function syncAndLinkBuiltModule() {
+  echo "Syncing built module to web server"
+  ansible "${SERVER}" -m synchronize \
+    -a "src=../deploy_tmp/${JOB_NAME} dest=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/ compress=yes delete=yes recursive=yes dir = yes archive=no" -u nginx
   echo "${MODULE_NAME} has been successfully synced"
+
+  echo "Linking built module"
+  ansible "${SERVER}" -m file \
+    -a "src=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME} dest=${DIR}/content/${JOB_NAME} state=link" -u nginx
+  echo "${JOB_NAME} has been successfully linked"
 }
 
-# TODO: function buildAllModule()
 function buildAllModule() {
   echo "Building all modules"
-
+  mvn clean package -Dmaven.test.skip=true
   echo "The all modules have been successfully built"
 }
 
-# TODO: function buildSignalModule()
 function buildSignalModule() {
   echo "Building the signal module ${MODULE_NAME}"
-
-  # TODO: change build signal module scripts
-  maven build "$1" -am
-
+  mvn clean package -Dmaven.test.skip=true -am -pl "$1"
   echo "The signal module ${MODULE_NAME} has been successfully built"
 }
 
