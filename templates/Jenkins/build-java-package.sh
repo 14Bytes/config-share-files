@@ -106,11 +106,15 @@ function checkApi() {
 # TODO: function deploy()
 function deploy() {
   echo "Deploying ${JOB_NAME} to ${SERVER}"
+
+  echo "Successfully deployed ${JOB_NAME} to ${SERVER}"
 }
 
 # TODO: function rollback()
 function rollback() {
   echo "Rolling back ${JOB_NAME} in ${SERVER} to ${ROLLBACK_VERSION}"
+
+  echo "Successfully rolled back ${JOB_NAME} in ${SERVER} to ${ROLLBACK_VERSION}"
 }
 
 # TODO: function main()
@@ -123,8 +127,6 @@ function main() {
       rollback
     ;;
   esac
-
-  echo "The ${JOB_NAME} has been successfully deployed"
 }
 
 main
