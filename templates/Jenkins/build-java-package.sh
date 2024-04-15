@@ -11,22 +11,19 @@
 # Description: Jenkins 打包发布 Java 项目脚本，包含清理旧的构建，同时拷贝 supervisor 的配置文件到服务器上。
 #
 
-# TODO: variables
 SERVER="${SERVER:-127.0.0.1}"
 DIR="${DIR:-/data}"
 
-# Enable JMX monitor 4 all project, not only 4 signal module
-ENABLE_JMX="${ENABLE_JMX:-false}"
+#function errInfo() {
+#  if [ "$SERVER" == "127.0.0.1" ]; then
+#    echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m Disabled deploy ${JOB_NAME} project to Jenkins Server\n\033[0m"
+#  fi
+#}
 
-function errInfo() {
-  if [ "$SERVER" == "127.0.0.1" ]; then
-    echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m Disabled deploy ${JOB_NAME} project to Jenkins Server\n\033[0m"
-  fi
-}
-
-# TODO: function mkdir4Module()
 function mkdir4Module() {
   echo "mkdir 4 module"
+  ansible "${SERVER}" -m file -a "path=${DIR}/releases/${JOB_NAME} state=directory" -u nginx
+  mkdir -p ../deploy_tmp/"${JOB_NAME}"
 }
 
 function deploy() {
@@ -36,10 +33,32 @@ function deploy() {
   "all")
     echo "Building all modules in ${JOB_NAME} project"
     mvn clean package -Dmaven.test.skip=true
+    echo "syncing Module and linking path"
+    ansible "${SERVER}" -m synchronize \
+      -a "src=../deploy_tmp/${JOB_NAME} dest=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/ \
+      compress=yes delete=yes recursive=yes dirs=yes archive=no" \
+      -u nginx
+    ansible "${SERVER}" -m file \
+      -a "src=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/${JOB_NAME} \
+      dest=${DIR}/content/${JOB_NAME} state=link" -u nginx
+    ansible "${SERVER}" -m shell \
+      -a "sudo supervisorctl restart ${JOB_NAME}-{${MODULE_NAME}}" \
+      -u nginx
     ;;
   "*")
     echo "Building ${MODULE_NAME} module in ${JOB_NAME} project"
     mvn clean package -Dmaven.test.skip=true -pl -am "${MODULE_NAME}"
+    echo "syncing Module and linking path"
+    ansible "${SERVER}" -m synchronize \
+      -a "src=../deploy_tmp/${JOB_NAME} dest=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/ \
+      compress=yes delete=yes recursive=yes dirs=yes archive=no" \
+      -u nginx
+    ansible "${SERVER}" -m file \
+      -a "src=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME}/${JOB_NAME} \
+      dest=${DIR}/content/${JOB_NAME} state=link" -u nginx
+    ansible "${SERVER}" -m shell \
+      -a "sudo supervisorctl restart ${JOB_NAME}-${MODULE_NAME}" \
+      -u nginx
     ;;
   esac
 }
