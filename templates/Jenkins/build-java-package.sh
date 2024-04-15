@@ -67,7 +67,7 @@ function syncModulesAndLink() {
 function supervisordEnable() {
   case "${MODULE_NAME}" in
     "all")
-      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-*" -u nginx
+      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-{module1,module2,module3}" -u nginx
     ;;
     "*")
       ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-${MODULE_NAME}" -u nginx
