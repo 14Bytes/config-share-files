@@ -14,12 +14,6 @@
 SERVER="${SERVER:-127.0.0.1}"
 DIR="${DIR:-/data}"
 
-#function errInfo() {
-#  if [ "$SERVER" == "127.0.0.1" ]; then
-#    echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m Disabled deploy ${JOB_NAME} project to Jenkins Server\n\033[0m"
-#  fi
-#}
-
 function main() {
   mkdir4Project
   case "${METHOD}" in
@@ -80,5 +74,11 @@ function supervisordEnable() {
     ;;
   esac
 }
+
+#function errInfo() {
+#  if [ "$SERVER" == "127.0.0.1" ]; then
+#    echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m Disabled deploy ${JOB_NAME} project to Jenkins Server\n\033[0m"
+#  fi
+#}
 
 main
