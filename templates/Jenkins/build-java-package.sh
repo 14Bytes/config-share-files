@@ -11,78 +11,51 @@
 # Description: Jenkins 打包发布 Java 项目脚本，包含清理旧的构建，同时拷贝 supervisor 的配置文件到服务器上。
 #
 
-SERVER="${SERVER:-127.0.0.1}"
+
+SERVER="${TARGET_IP:-127.0.0.1}"  # 由于生产环境需要轮询此变量梯次重启服务，故此变量不能写ansible hosts分组名。
 DIR="${DIR:-/data}"
 
-MOD_NAME_1=""
-MOD_NAME_2=""
-MOD_NAME_3=""
-
 function main() {
-  mkdir4Project
-  case "${METHOD}" in
-    "deploy")
-      deploy
-    ;;
-    "rollback")
-      rollback
-    ;;
-  esac
+  initServer
+  if [[ "${METHOD}" == "deploy" ]]; then
+    echo "开始部署应用到服务器上"
+
+    case "${MODULE_NAME}" in
+      "all")
+        mvn clean package -Dmaven.test.skip=true
+        # TODO: 遍历构建所有的模块并copy到指定目录
+        syncAndLink
+        ;;
+      "*")
+        mvn clean package -Dmaven.test.skip=true -am -pl "${MODULE_NAME}"
+        /bin/cp -rf ./"${MODULE_NAME}"/target/*.jar ../deploy_tmp/"${JOB_NAME}"/"${MODULE_NAME}".jar
+        syncAndLink
+        ;;
+    esac
+
+    echo "部署应用到服务器上完成"
+  else
+    rollback
+  fi
 }
 
-function deploy() {
-  case "${MODULE_NAME}" in
-    "all")
-      buildAllModules
-    ;;
-    "*")
-      buildSignalModule
-    ;;
-  esac
-}
+function initServer() {
+  echo "初始化 Jenkins 服务器和 Web 服务器"
+  [[ -f ../deploy_tmp/"${JOB_NAME}" ]] && echo "已经初始化过了" && exit 1
 
-function rollback() {
-  echo "rollback"
-}
+  ansible "${SERVER}" -m file -a "path=${DIR}/releases/${JOB_NAME}/${MODULE_NAME} state=directory" -u nginx
+  ansible "${SERVER}" -m file -a "path=${DIR}/content/${JOB_NAME} state=directory" -u nginx
 
-
-function buildAllModules() {
-  mvn clean package -Dmaven.test.skip=true
-  syncModulesAndLink
-  supervisordEnable
-}
-
-function buildSignalModule() {
-  mvn clean package -pl -am "${MODULE_NAME}" -Dmaven.test.skip=true
-  syncModulesAndLink
-  supervisordEnable
-}
-
-function mkdir4Project() {
-  ansible "${SERVER}" -m file -a "path=${DIR}/releases/${JOB_NAME} state=directory" -u nginx
   mkdir -p ../deploy_tmp/"${JOB_NAME}"
+  echo "初始化 Jenkins 服务器和 Web 服务器完成"
 }
 
-function syncModulesAndLink() {
-  ansible "${SERVER}" -m synchronize -a "src=../deploy_tmp/${JOB_NAME} dest=${DIR}/releases/${JOB_NAME}/${BUILD_DISPLAY_NAME} compress=yes delete=yes recursive=yes dirs=yes archive=no" -u nginx
-  ansible "${SERVER}" -m file -a "src=${DIR}/releases/${JOB_NAME}/${BUILD_NAME_DISPLAY} dest=${DIR}/content/${JOB_NAME} state=link" -u nginx
+function syncAndLink() {
+  echo "同步打包的博客并创建软链"
 }
 
-function supervisordEnable() {
-  case "${MODULE_NAME}" in
-    "all")
-      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-{${MOD_NAME_1},${MOD_NAME_2},${MOD_NAME_3}}" -u nginx
-    ;;
-    "*")
-      ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-${MODULE_NAME}" -u nginx
-    ;;
-  esac
+function checkApi() {
+  echo "检查 API 是否正常"
 }
-
-#function errInfo() {
-#  if [ "$SERVER" == "127.0.0.1" ]; then
-#    echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m Disabled deploy ${JOB_NAME} project to Jenkins Server\n\033[0m"
-#  fi
-#}
 
 main
