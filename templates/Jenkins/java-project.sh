@@ -29,6 +29,8 @@ function initServer() {
 # TODO: function mkLink()
 
 # TODO: function checkErr()
+# TODO: Err1: Server = 127.0.0.1
+# TODO: Err2: Util Function exist
 
 # TODO: function cleanOldBuild()
 
