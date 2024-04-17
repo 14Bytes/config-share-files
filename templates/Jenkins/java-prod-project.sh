@@ -83,6 +83,38 @@ function syncModules() {
   echoInfo "同步完成，准备创建软链"
 }
 
+function linkModules() {
+  echoInfo "执行创建软链任务"
+  ansible "${SERVER}" -m file -a "src=${DIR}/releases/${JOB_NAME}/${MODULE_NAME}/${MODULE_NAME}_${BUILD_DISPLAY_NAME}.jar dest=${DIR}/content/${JOB_NAME}/${MODULE_NAME}.jar state=link" -u nginx
+  echoInfo "创建软链成功，准备使用 supervisor 进行 jar 包管理"
+}
+
+function monitorModules() {
+  echoInfo "使用 supervisor 管理 ${JOB_NAME}-${MODULE_NAME} 包"
+  ansible "${SERVER}" -m shell -a "sudo supervisorctl restart ${JOB_NAME}-${MODULE_NAME}" -u nginx
+  echoInfo "supervisor 启动完成，等待执行 api 检查任务"
+}
+
+# Check Api functions
+function findPort4Modules() {
+  port=9901
+}
+
+function checkApi() {
+  findPort4Modules
+
+  echoInfo "${MODULE_NAME} 运行所在的端口为：${port}"
+
+  case "${MODULE_NAME}" in
+    *"admin"*)
+      curl http://"${SERVER}":"${port}"/admin/api/prod
+      ;;
+    *"app"*)
+      ;;
+  esac
+}
+
+
 function main() {
   initServer
   checkErr
@@ -92,11 +124,10 @@ function main() {
       buildModules
       syncModules
       linkModules
-      MonitorModules
+      monitorModules
       checkApi
       ;;
     "rollback")
-      findPort
       rollbackLink
       checkApi
       ;;
