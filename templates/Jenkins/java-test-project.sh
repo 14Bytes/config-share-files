@@ -80,9 +80,6 @@ function cleanOldBuild() {
 
 # TODO: function checkApi()
 # TODO: 生产环境需要部署
-function checkApi() {
-  echo "检查 ${JOB_NAME}-${MODULE_NAME} 模块的运行情况"
-}
 
 function deploy() {
   buildModules
