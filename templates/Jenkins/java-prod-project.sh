@@ -95,47 +95,6 @@ function monitorModules() {
   echoInfo "supervisor 启动完成，等待执行 api 检查任务"
 }
 
-# Check Api functions
-function findPort4Modules() {
-  port=9901
-}
-
-function checkApi() {
-  local i
-
-  findPort4Modules
-  echoInfo "${MODULE_NAME} 运行所在的端口为：${port}"
-  sleep 10s
-  i=1
-  while [ $i -le 6 ]
-  do
-    case "${MODULE_NAME}" in
-      *"admin"*) json=$(curl http://"${SERVER}":"${port}"/admin/api/probe || echo "0");;
-      *"app"*) json=$(curl http://"${SERVER}":"${port}"/api/probe || echo "0");;
-      *) json="succeed"
-    esac
-    if [ "${json}" == "succeed" ]; then
-      echoInfo "${JOB_NAME}\'s ${MODULE_NAME} 重启完成"; break
-    fi
-    sleep 5s
-    i++
-  done
-
-  if [ $i -gt 5 ]; then
-    echoErrBasic "${JOB_NAME}\'s ${MODULE_NAME} 重启失败"; exit 1
-  fi
-
-}
-
-function pollingServer() {
-  local server
-
-  for server in ${SERVER//,/ }
-  do
-    checkApi
-  done
-}
-
 function main() {
   initServer
   checkErr
