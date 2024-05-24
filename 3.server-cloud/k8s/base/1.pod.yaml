@@ -1,0 +1,15 @@
+# apiVersion 解释：
+# alpha：进入 k8s 功能的早期候选版本，可能包含 bug，最终不一定进入 k8s
+# beat：已经经过测试的版本，最终会进入 k8s，但功能、对象定义可能会发生改变
+# stable：可安全使用的稳定版本
+# v1：stable 版本之后的首个版本，包含了更多的核心对象
+# apps/v1：使用最广泛的版本，像 Deployment、ReplicaSets 都已进入该版本
+apiVersion: v1
+# 指定对象的类型
+kind: Pod
+# 提供对象的元数据，如名称、命名空间、标签
+metadata:
+  name: test-pod
+  namespace: luffy
+  labels:
+    component: test-pod
