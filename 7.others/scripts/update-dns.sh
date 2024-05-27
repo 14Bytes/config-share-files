@@ -73,7 +73,7 @@ function change_directory() {
 function judge_remain() {
   if [ -e "$REVERSE_HOSTNAME.conf" ]; then
     echo "Info: $REVERSE_HOSTNAME.conf 文件存在，准备查找记录"
-    if grep -q "$HOSTNAME" "$REVERSE_HOSTNAME".conf ; then
+    if grep -Er "/$HOSTNAME/" "$REVERSE_HOSTNAME".conf ; then
       echo "Info: 解析记录已存在"
       exit 1
     else
@@ -94,7 +94,7 @@ function update_dns() {
   case $IS_TLD in
     0)
       sed -i "1a\server=/$HOSTNAME/$IP" "$REVERSE_HOSTNAME".conf
-      echo "Info: 更新上层 DNS 解析完成"
+      echo "Info: 配置递归 DNS 解析"
       ;;
     1)
       echo "address=/$HOSTNAME/$IP" >> "$REVERSE_HOSTNAME".conf
@@ -102,26 +102,32 @@ function update_dns() {
       ;;
   esac
 
-  # systemctl restart dnsmasq
+  systemctl restart dnsmasq
 }
 
 # 检查绑定的域名状态
 function status_check() {
-  :
+  echo "Info: 检查 DNS 解析情况"
+  nslookup "$HOSTNAME"
 }
 
 # 函数入口
 function main() {
-  :
+  judge_ip_regex
+  reverse_hostname
+  change_directory
+  judge_remain
+  update_dns
+  status_check
 }
 
 # 测试函数
 function test() {
   judge_ip_regex
   reverse_hostname
-  # change_directory
   judge_remain
   update_dns
+  status_check
 }
 
 
