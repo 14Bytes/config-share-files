@@ -6,6 +6,8 @@
 # Globals:
 # Arguments:
 #  None
+#
+# 需要配置 DNS 服务器上的 /etc/resolv.conf 文件，添加首条记录为 nameserver 127.0.0.1
 
 HOSTNAME=$1
 IP=$2
