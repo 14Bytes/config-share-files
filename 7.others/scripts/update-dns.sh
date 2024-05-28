@@ -128,10 +128,10 @@ function test() {
   judge_ip_regex
   reverse_hostname
   judge_remain
-  update_dns
+  update_dns # 需要注释掉 function update_dns() 中重启 dnsmasq 的命令
   status_check
 }
 
 
-test "$@"
-# main "$@"
+# test "$@"
+main "$@"
