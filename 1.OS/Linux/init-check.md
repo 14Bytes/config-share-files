@@ -14,3 +14,32 @@
 ## 调优设置
 
 
+## Web 服务器
+
+### 前端
+
+- [ ] nginx
+- [ ] keepalived
+
+### 后端
+
+- [ ] nginx
+- [ ] supervisord
+- [ ] jdk
+
+## Jenkins 服务器
+
+- [ ] jdk11
+- [ ] jenkins
+- [ ] nvm
+- [ ] jdk
+- [ ] ansible
+
+## Mysql 服务器
+
+- [ ] mysql
+- [ ] keepalived
+
+## Redis 服务器
+
+- [ ] redis
