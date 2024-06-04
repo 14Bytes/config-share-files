@@ -2,10 +2,10 @@
 #
 # Script Name: clean-old-builds.sh
 #
-# Author: J1n H4ng<jinhang@mail.14bytes.com>
+# Author: J1nH4ng<jinhang@mail.14bytes.com>
 # Date: April 17, 2024
 #
-# Last Editor: J1n H4ng<jinhang@mail.14bytes.com>
+# Last Editor: J1nH4ng<jinhang@mail.14bytes.com>
 # Last Modified:  April 17, 2024
 #
 # Description: Clean old Jenkins build stage
@@ -30,4 +30,4 @@ function main() {
   cleanOldBuildStage
 }
 
-main
+main "$@"
