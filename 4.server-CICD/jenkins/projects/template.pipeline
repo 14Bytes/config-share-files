@@ -1,0 +1,32 @@
+Jenkinsfile (Declarative Pipeline)
+
+/// 使用 def 定义变量
+def harbor_registry = "harbor.14bytes.com"
+
+/// harbor 项目名称
+def harbor_project = ""
+
+/// harbor 项目中的镜像名
+def app_name = ""
+
+/// 具体镜像名称，镜像的 tag 版本号，引用 Jenkins 自带的 BUILD_NUMBER 变量，每 build 一次就会自增 +1
+def image_name = "${harbor_registry}/${harbor_project}/${app_name}:${BUILD_NUMBER}"
+
+/// 代码仓库地址
+def git_address = "git.14bytes.com"
+
+/// harbor 仓库的账号和密码登陆 token
+def harbor_auth = "xxx-xxx-xxx-xxx-xxx"
+
+/// git 仓库的账号和密码登陆 token
+def git_auth = "xxx-xxx-xxx-xxx-xxx"
+
+/// kubeconfig 文件的 id 值，用于执行 kubectl 时使用
+def k8s_kubeconfig = "xxx-xxx-xxx-xxx"
+
+/// pod 部署时向 harbor 拉取镜像的 secret 凭据名称
+def secret_name = "harbor-secret"
+
+pipeline {
+
+}
