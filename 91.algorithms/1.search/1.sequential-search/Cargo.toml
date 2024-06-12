@@ -1,0 +1,10 @@
+[package]
+name = "main"
+version = "0.1.0"
+edition = "2021"
+authors = [
+    "J1nH4ng<j1nh4ng@icloud.com>"
+]
+license = "MIT"
+
+[dependencies]
