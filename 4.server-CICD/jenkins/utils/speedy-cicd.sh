@@ -92,5 +92,6 @@ function test() {
   :
 }
 
+# test "$@"
+
 main "$@"
-test "$@"
