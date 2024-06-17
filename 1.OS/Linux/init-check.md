@@ -10,6 +10,7 @@
 - [ ] 新建虚拟机时配置 never stop 选项
 - [ ] 修改仓库源
 - [ ] 关闭防火墙或打开防火墙端口
+- [ ] 关闭 selinux
 - [ ] 升级 openssl
 - [ ] 升级 openssh
 - [ ] 挂载磁盘
@@ -36,6 +37,8 @@
 
 - [ ] nginx
   - [ ] 负载均衡
+- [ ] keepalived
+  - [ ] 是否由硬件支持
 - [ ] supervisord
 - [ ] jdk
   - [ ] 版本
