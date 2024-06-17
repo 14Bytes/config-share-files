@@ -32,6 +32,7 @@
   - [ ] 负载均衡
 - [ ] keepalived
   - [ ] 是否由硬件支持
+- [ ] ansible
 
 ### 后端
 
@@ -42,6 +43,8 @@
 - [ ] supervisord
 - [ ] jdk
   - [ ] 版本
+- [ ] ansible
+- [ ] nfs 存储或者其他存储方式
 
 ## Jenkins 服务器
 
@@ -49,12 +52,15 @@
 - [ ] jenkins
   - [ ] web 界面
   - [ ] 配置 ssh
+  - [ ] 配置 git
+  - [ ] 使用到的脚本
 - [ ] nvm
   - [ ] 确定 nodejs, pnpm 版本（指定版本安装）
 - [ ] maven
   - [ ] 修改仓库
 - [ ] ansible
   - [ ] 22 端口是否放通
+  - [ ] 配置 ansible hosts 文件内容
 
 - [ ] Jenkins 不通的话，半自动脚本部署
 
@@ -62,7 +68,9 @@
 
 - [ ] mysql
   - [ ] 确定版本
-  - [ ] 主主同步
+  - [ ] 架构
+    - [ ] 单点
+    - [ ] 主主同步
   - [ ] 备份策略
 - [ ] keepalived
   - [ ] 是否由硬件支持
@@ -70,7 +78,9 @@
 ## 中间件服务器
 
 - [ ] redis
-  - [ ] 集群搭建
+  - [ ] 架构
+    - [ ] 单点
+    - [ ] 集群搭建
 - [ ] rabbitmq
 - [ ] nacos
 
@@ -87,11 +97,20 @@
 - [ ] php 7.4
   - [ ] 编译时修改模块解决乱码问题
 - [ ] zabbix
+  - [ ] 确定版本
   - [ ] 数据库和业务数据库分离
   - [ ] proxy
   - [ ] agent1 or agent2
   - [ ] web 修改解决乱码问题
 - [ ] prometheus
+
+## K8S 服务器
+
+- [ ] K8S 版本
+- [ ] kubesphere 版本
+- [ ] 以 root 用户权限安装
+- [ ] harbor 存储位置
+- [ ] dockerhub 拉取镜像代理
 
 ## 其他事项
 
