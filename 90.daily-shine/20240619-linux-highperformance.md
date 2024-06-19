@@ -70,3 +70,12 @@ free 是执行时间的瞬时计数，/proc/memory 内存是实时变化的
 - 虚拟化环境：在虚拟化环境中，交换分区可以用于虚拟机的内存管理。当宿主机的物理内存不足时，虚拟机的内存页面可以被交换到宿主机的交换分区，以提供额外的内存空间。
 - 内存回收和页面置换：交换分区可以用于内存回收和页面置换算法。当操作系统需要释放物理内存以满足更紧急的需求时，它可以将不活动的内存页面置换到交换分区中，以便将物理内存分配给更重要的任务或进程
 
+## 性能调优
+
+1. history 命令加入时间和操作者 IP 的属性
+    ```bash
+    echo "HISTFILESIZE=4000" >> /etc/profile
+    echo "HISTSIZE=4000" >> /etc/profile
+    echo 'HISTTIMEFORMAT="%F %T `who am i | cut -d "(" -f2 | cut -d ")" -f1` `whoami` "' >> /etc/profile
+    echo "export HISTTIMEFORMAT" >> /etc/profile
+    ```
