@@ -14,8 +14,8 @@
 - 日志输出格式：
   - ${time}:${deployer} ${method_name} ${project_name} ${module_name}:${deploy_message}
     ```bash
-    [2024-06-21-00:00:00]: test deploy test-project test-mode:test deploy
-    [2024-06-21-00:00:00]: test rollback test-project test-mode:test rollback
+    [info] 2024-06-21 00:00:00 test deploy test-project test-mode:test deploy
+    [info] 2024-06-21 00:00:00 test rollback test-project test-mode:test rollback
     ```
 
 - 模块设计部分：
