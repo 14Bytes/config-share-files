@@ -1,0 +1,14 @@
+[package]
+name = "curl-cicd"
+version = "0.1.0"
+edition = "2021"
+authors = [
+    "J1nH4ng<j1nh4ng@icloud.com>",
+]
+license = "MIT"
+
+[dependencies]
+axum = "0.7.5"
+tokio = { version = "1.38.0", features = ["full"] }
+hyper = { version = "1.3.1", features = ["full"] }
+serde = { version = "1.0.203", features = ["derive"] }
