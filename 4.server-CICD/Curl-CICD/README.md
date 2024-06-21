@@ -13,10 +13,10 @@
 
 - 日志输出格式：
   - ${time}:${deployer} ${method_name} ${project_name} ${module_name}:${deploy_message}
-```bash
-[2024-06-21-00:00:00]: test deploy test-project test-mode:test deploy
-[2024-06-21-00:00:00]: test rollback test-project test-mode:test rollback
-```
+    ```bash
+    [2024-06-21-00:00:00]: test deploy test-project test-mode:test deploy
+    [2024-06-21-00:00:00]: test rollback test-project test-mode:test rollback
+    ```
 
 - 模块设计部分：
   - 初步构想是作为一个中间件处理，在接受到路由的时候进行特定脚本的执行，后续调试只需要修改脚本即可
