@@ -12,7 +12,7 @@
   - method_name：动作名称
 
 - 日志输出格式：
-  - ${time}:${deployer} ${method_name} ${project_name} ${module_name}:${deploy_message}
+  - [info] ${time} ${deployer} ${method_name} ${project_name} ${module_name}:${deploy_message}
     ```bash
     [info] 2024-06-21 00:00:00 test deployed test-project test-mode:test deployed
     [info] 2024-06-21 00:00:00 test rollback test-project test-mode:test rollback
