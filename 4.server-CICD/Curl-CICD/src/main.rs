@@ -15,7 +15,7 @@ struct ProgramParams {
 }
 
 async fn deploy() {
-    println!("deploy")
+    println!("deploy.sh")
 }
 
 async fn rollback() {

@@ -19,7 +19,7 @@ function initServer() {
   echo "初始化服务器"
 }
 
-# TODO： function deploy()
+# TODO： function deploy.sh()
 
 # TODO: function rollback()
 
