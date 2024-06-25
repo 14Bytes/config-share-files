@@ -42,6 +42,8 @@
 - [ ] keepalived
   - [ ] 是否由硬件支持
 - [ ] ansible
+- [ ] 脚本内容
+  - [ ] file_sync.sh
 
 ### 后端
 
@@ -54,6 +56,8 @@
   - [ ] 版本
 - [ ] ansible
 - [ ] nfs 存储或者其他存储方式
+- [ ] 脚本内容
+  - [ ] file_sync.sh
 
 ## Jenkins 服务器
 
@@ -70,6 +74,8 @@
 - [ ] ansible
   - [ ] 22 端口是否放通
   - [ ] 配置 ansible hosts 文件内容
+- [ ] 脚本内容
+  - [ ] clean_old_builds.sh
 
 - [ ] Jenkins 不通的话，半自动脚本部署
 
