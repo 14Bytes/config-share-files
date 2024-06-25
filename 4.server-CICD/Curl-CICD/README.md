@@ -24,6 +24,16 @@
 - 问题部分：
   - 外部请求时，需要知道脚本的执行情况
   - deployer 和 passwd 的校对
+  - 文件拷贝情况的校对
+
+## 函数部分
+
+- function sync_file()
+- function check_username_and_passwd()
+- function check_md5()
+- function deploy()
+- function rollback()
+- function log()
 
 ## 设计目的
 
