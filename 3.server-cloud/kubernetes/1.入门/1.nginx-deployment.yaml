@@ -34,3 +34,10 @@ spec:
         - name: nginx
           # 使用镜像 nginx:1.25.0 创建 container
           image: nginx:1.25.0
+
+# 应用 yaml 文件
+# kubectl apply -f 1.nginx-deployment.yaml
+# 查看部署的结果
+# kubectl get deployments
+# 查看 pod
+# kubectl get pods
