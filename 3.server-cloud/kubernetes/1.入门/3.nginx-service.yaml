@@ -1,0 +1,55 @@
+# 由于 k8s 集群中每个 Pod 都有一个唯一的 IP 地址，即使是同一个 Node 上的不同 Pod，
+#   所以需要一种机制，为前端系统屏蔽掉后端系统的 Pod 在销毁，创建过程中带来的 IP 地址的变化
+# Service 提供了这样的服务，它选择具备某些特征的 Pod 并为它们定义一个访问方式，
+#   Service 的出现使得 Pod 之间相互解耦，一个 Service 选定哪些 Pod 通常由 LabelSelector 来决定
+# 在创建 Service 时，通过设置配置文件中的 spec.type 字段的值，可以以不同的方式向外部暴露应用程序
+# - ClusterIP(default)：在集群中的内部 IP 上公布服务，这种方式的 Service 只在集群内部可以访问到
+# - NodePort：使用 NAT 在集群中每个的同一端口上公布服务，这种方式下，
+#    可以通过访问集群中任意节点+端口号的方式访问服务：<NodeIP>+<NodePort>，
+#    此时，ClusterIP 的访问方式依然可用
+# - LoadBalancer：在云环境中创建一个集群外部的负载均衡器，并为使用该负载均衡器的 IP 地址作为服务的访问地址，
+#    此时，上诉的两个方式仍然可用。
+
+# nginx deployment 的 yaml 文件中定义了如下的 labels
+# metadata:
+#   name: nginx-deployment
+#   labels:
+#     app: nginx
+
+apiVersion: v1
+kind: Service
+metadata:
+  # Service 的名称
+  name: nginx-service
+  # Service 自己的标签
+  labels:
+    # 为该 Service 设置 key 为 app，value 为 nginx 的标签
+    app: nginx
+# 关于 Service 的定义，描述了 Service 如何选择 Pod，如何被访问
+spec:
+  # 标签选择器
+  selector:
+    # 选择包含标签 app: nginx 的 Pod
+    app: nginx
+  ports:
+  # 端口的名字
+  - name: nginx-port
+    # 协议类型 TCP/UDP
+    protocol: TCP
+    # 集群内的其他容器组可通过 80 端口访问 Service
+    port: 80
+    # 通过任意节点的 32600 端口访问 Service
+    nodePort: 32600
+    # 将请求转发到匹配 Pod 的 80 端口
+    targetPort: 80
+  # Service 的类型： ClusterIP/NodePort/LoaderBalancer
+  type: NodePort
+
+# 执行命令
+# kubectl apply -f nginx-service.yaml
+
+# 检查执行结果
+# kubectl get services -o wide
+
+# 访问服务
+# curl <任意节点的 IP>:32600
