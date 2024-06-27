@@ -15,6 +15,7 @@ function check_variables() {
 
   PROGRAM="$1"
   PROTOCOL_NAME="$2"
+  # TODO: 多个 IP 的循环遍历同步
   IP_DEST="0.0.0.0"
 }
 
@@ -24,8 +25,6 @@ function echo_info() {
 }
 
 function choose_program() {
-  local DIR_SRC
-  local DIR_DEST
   case "$PROGRAM" in
     "nginx")
       # 根据实际情况修改
@@ -72,6 +71,7 @@ function rsync_file() {
   esac
 }
 
+# 执行脚本
 function execute_script() {
   :
 }
