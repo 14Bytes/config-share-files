@@ -2,6 +2,8 @@
 
 > 一些工作中用到的模板配置文件，附带详细的配置注释内容，并包含了一些常用的笔记内容。
 
+![Alt](https://repobeats.axiom.co/api/embed/e56e0f2def1120386c57a1879052d8cf1b6dd2e0.svg "Repobeats analytics image")
+
 ## 命名由来
 
 对于工作中一些常用的配置，每次都是不断优化且复用率较高的，所以构建一个公共仓库来进行存储。
