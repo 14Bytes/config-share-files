@@ -9,8 +9,15 @@
 
 # TODO: 添加 VUE 的半自动发布
 
-JOB_NAME=$1
-MODULE_NAME=$2
+# 判断传递的参数个数
+if [ $# -ne 3 ]; then
+  echo_error_basic "使用方法: $0 <fe or be> <JOB_NAME> <MODULE_NAME>"
+  exit 1
+fi
+
+END_POINT=$1
+JOB_NAME=$2
+MODULE_NAME=$3
 CURRENT_DATE=$(date +"%Y%m%d%H%M%S")
 CONTENTS_PATH="/data/contents/${JOB_NAME}/${MODULE_NAME}/${CURRENT_DATE}"
 SPEEDY_PATH="/usr/local/src/speedy-cicd"
@@ -27,12 +34,6 @@ function echo_alert() {
 function echo_error_basic() {
   echo -e "\033[1;36m$(date +"%H:%M:%S")\033[0m \033[1;31m[ERROR]\033[0m - \033[1;31m$1\n\033[0m"
 }
-
-# 判断传递的参数个数
-if [ $# -ne 2 ]; then
-  echo_error_basic "使用方法: $0 <JOB_NAME> <MODULE_NAME>"
-  exit 1
-fi
 
 function mk_contents_dir() {
   echo_alert "为 ${MODULE_NAME} 创建新的 contents 目录"
