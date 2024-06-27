@@ -7,16 +7,16 @@
 # Arguments:
 #  None
 
-if [ $# -eq 0 ]; then
-  echo "Usage: $0 program-name(nginx|ca|supervisord) module-name(ssh|rsync)"
-  exit 1
-fi
+function check_variables() {
+  if [ $# -ne 2 ]; then
+    echo "Usage: $0 program-name(nginx|ca|supervisord) protocol-name(ssh|rsync)"
+    exit 1
+  fi
 
-
-PROGRAM="$1"
-MODULE_NAME="$2"
-# 修改 IP 为对点 IP
-IP_DEST="0.0.0.0"
+  PROGRAM="$1"
+  PROTOCOL_NAME="$2"
+  IP_DEST="0.0.0.0"
+}
 
 function echo_info() {
   echo "使用 SSH 协议进行同步时，请确保服务器之间可以进行横向 SSH 通信，如果不能，请使用 RSYNC 协议"
@@ -24,6 +24,8 @@ function echo_info() {
 }
 
 function choose_program() {
+  local DIR_SRC
+  local DIR_DEST
   case "$PROGRAM" in
     "nginx")
       # 根据实际情况修改
@@ -57,7 +59,7 @@ function check_md5() {
 }
 
 function rsync_file() {
-  case ${MODULE_NAME} in
+  case ${PROTOCOL_NAME} in
     "SSH"|"ssh")
       echo "使用 SSH 协议在服务器之间进行 rsync 同步，请确保服务器之间可以进行横向 SSH 通信"
       ;;
