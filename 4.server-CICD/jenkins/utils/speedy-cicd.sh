@@ -7,6 +7,8 @@
 # Arguments:
 #  None
 
+# TODO: 添加 VUE 的半自动发布
+
 JOB_NAME=$1
 MODULE_NAME=$2
 CURRENT_DATE=$(date +"%Y%m%d%H%M%S")
