@@ -50,17 +50,28 @@ function choose_program() {
 }
 
 function init_md5() {
-  :
+  echo "生成 ${PROGRAM} 项目的最新 md5 文件"
+  find "${DIR_SRC}" -type f -exec md5sum {} \; >> /data/scripts/sync/"${PROGRAM}"_new.md5
 }
 
 function check_md5() {
-  :
+  echo "检查是否存在上次的 md5 文件"
+  if [ ! -f "/data/scripts/sync/${PROGRAM}_last.md5" ]; then
+    find "${DIR_SRC}" -type -f -exec md5sum {} \; >> /data/scripts/sync/"${PROGRAM}"_last.md5
+  fi
+
+  echo "对比 md5 文件内容"
+  if [ -n "$(diff /data/scripts/sync/${PROGRAM}_last.md5 /data/scripts/sync/${PROGRAM}_new.md5)" ]; then
+    rsync_file
+    execute_script
+  fi
 }
 
 function rsync_file() {
   case ${PROTOCOL_NAME} in
     "SSH"|"ssh")
       echo "使用 SSH 协议在服务器之间进行 rsync 同步，请确保服务器之间可以进行横向 SSH 通信"
+      rsync -av --delete "${DIR_SRC}" root@"${IP_DEST}":"${DIR_DEST}"
       ;;
     "RSYNC"|"rsync")
       echo "使用 RSYNC 协议在服务器之间进行 rsync 同步"
