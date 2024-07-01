@@ -44,6 +44,7 @@
 - [ ] ansible
 - [ ] 脚本内容
   - [ ] file_sync.sh
+  - [ ] speed_cicd.sh
 
 ### 后端
 
@@ -58,6 +59,7 @@
 - [ ] nfs 存储或者其他存储方式
 - [ ] 脚本内容
   - [ ] file_sync.sh
+  - [ ] speed_cicd.sh
 
 ## Jenkins 服务器
 
@@ -87,6 +89,8 @@
     - [ ] 单点
     - [ ] 主主同步
   - [ ] 备份策略
+    - [ ] mysqldump
+    - [ ] XtraBackup
 - [ ] keepalived
   - [ ] 是否由硬件支持
 
@@ -121,6 +125,7 @@
 
 ## K8S 服务器
 
+- [ ] 前置安装：socat、conntrack
 - [ ] K8S 版本
 - [ ] kubesphere 版本
 - [ ] 以 root 用户权限安装
