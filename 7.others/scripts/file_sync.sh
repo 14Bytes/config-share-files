@@ -71,10 +71,15 @@ function rsync_file() {
   case ${PROTOCOL_NAME} in
     "SSH"|"ssh")
       echo "使用 SSH 协议在服务器之间进行 rsync 同步，请确保服务器之间可以进行横向 SSH 通信"
+      # rsync -n 参数进行模拟执行
       rsync -av --delete "${DIR_SRC}" root@"${IP_DEST}":"${DIR_DEST}"
       ;;
     "RSYNC"|"rsync")
       echo "使用 RSYNC 协议在服务器之间进行 rsync 同步"
+      # module 并不是实际路径名，而是 rsync 守护程序指定的一个资源名
+      # 使用下面命令知道所有的 module 列表
+      # rsync rsync://${IP_DEST}
+      rsync -av "${DIR_SRC}" "${IP_DEST}"::module/"${DIR_DEST}"
       ;;
     "*")
       echo "不支持其他协议的同步"
