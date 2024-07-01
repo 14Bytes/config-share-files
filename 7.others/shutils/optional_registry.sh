@@ -4,7 +4,6 @@
 #   - function echo_info(): info 类信息输出格式化函数
 #   - function echo_alert(): alert 类信息输出格式化函数
 #   - function echo_error_basic(): error 类信息输出格式化基础函数
-#     - function echo_error_git(): git 的 error 信息输出格式化函数
 #   - function inwaer_test(): 该文件本身的测试函数
 
 # md5.sh 中的函数
