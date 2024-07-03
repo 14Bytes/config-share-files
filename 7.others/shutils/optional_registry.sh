@@ -1,6 +1,6 @@
 # optional_registry 记录了函数与文件的对应关系
 
-# inwaer.sh 中的函数
+# inwaer_logs.sh 中的函数
 #   - function echo_info(): info 类信息输出格式化函数
 #   - function echo_alert(): alert 类信息输出格式化函数
 #   - function echo_error_basic(): error 类信息输出格式化基础函数
