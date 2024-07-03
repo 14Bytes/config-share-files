@@ -12,14 +12,24 @@
 # Arguments:
 #  None
 
+
+# 所有数据库备份
 function backup_all_DB() {
   :
 }
 
-function zip_sql() {
+# 备份单独数据库
+function backup_signal_DB() {
   :
 }
 
-function clean_old_zip() {
+# 备份其中几个数据库
+function backup_some_DB() {
   :
 }
+
+function dump_backup_test() {
+  :
+}
+
+dump_backup_test "$@"

@@ -7,7 +7,7 @@
 # Arguments:
 #  None
 
-source ./inwaer.sh
+source ./../core/inwaer.sh
 
 function init_signal_md5() {
   # 输入文件的绝对路径，例如：/tmp/test.sh
