@@ -43,11 +43,16 @@ function judge_dir_can_delete() {
         # 判断时间戳
         if [ "${DIR_TIMESTAMP}" -lt "${SEVEN_DAYS_AGO}" ]; then
           echo_info "${DIR_CAN_DELETE_NAME} 将会被删除"
-          DIR_CAN_DELETE_LIST=("${DIR_CAN_DELETE_NAME}")
+          DIR_CAN_DELETE_LIST+=("${DIR_CAN_DELETE_NAME}")
         fi
       fi
     fi
   done
+
+  if [ ${#DIR_CAN_DELETE_LIST[@]} -eq 0 ]; then
+    echo_info "No directories older than 7 days found."
+    exit 0
+  fi
 }
 
 function 2_confirm() {
@@ -56,10 +61,10 @@ function 2_confirm() {
   if [ "$1" == "yes|y" ]; then
     CONFIRMATION="y"
   else
-    read -p "Do you want to delete these directories? (y/n): " CONFIRMATION
+    read -rp "Do you want to delete these directories? (y/n): " CONFIRMATION
   fi
 
-  # TODO: 是一个个删除目录，且从新到旧删除，需要修改
+
   if [ "${CONFIRMATION}" == "y" ]; then
     for DIR_CAN_DELETE_NAME in "${DIR_CAN_DELETE_LIST[@]}"; do
       echo_alert "Deleting directory: ${DIR_CAN_DELETE_NAME}"
