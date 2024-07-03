@@ -7,7 +7,7 @@
 # Arguments:
 #  None
 
-source ../core/inwaer.sh
+source ../core/inwaer_logs.sh
 
 function judge_dir_can_delete() {
   # local BASIC_DIR
@@ -26,7 +26,7 @@ function judge_dir_can_delete() {
 
   if [ ! -d "${BASIC_DIR}" ]; then
     echo_error_basic "Directory ${BASIC_DIR} does not exist."
-    echo_error_basic "$0: Directory ${BASIC_DIR} dose not exist." >> /tmp/shutils.log
+    # echo_error_logs "$0" "查找需要删除的目录，${BASIC_DIR}不存在"
     exit 1
   fi
 
