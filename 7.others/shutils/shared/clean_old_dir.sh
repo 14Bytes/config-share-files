@@ -58,7 +58,7 @@ function judge_dir_can_delete() {
 function 2_confirm() {
   local CONFIRMATION
 
-  if [ "$1" == "yes|y" ]; then
+  if [ "$1" == "y" ]; then
     CONFIRMATION="y"
   else
     read -rp "Do you want to delete these directories? (y/n): " CONFIRMATION
