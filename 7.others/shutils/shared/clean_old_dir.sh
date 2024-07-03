@@ -10,18 +10,19 @@
 source ../core/inwaer.sh
 
 function judge_dir_can_delete() {
+  # local BASIC_DIR
+  # local DIR_CAN_DELETE_LIST
+
   local CURREN_TIMESTAMP
   local SEVEN_DAYS_AGO
-  # local BASIC_DIR
   local DIR_LIST
-  # local DIR_CAN_DELETE_LIST
   local DIR_CAN_DELETE_NAME
   local DIR_TIMESTAMP
 
-  CURREN_TIMESTAMP=$(date +%s)
-  SEVEN_DAYS_AGO=$((CURREN_TIMESTAMP - 7*24*60*60))
   BASIC_DIR=$1
   DIR_CAN_DELETE_LIST=()
+  CURREN_TIMESTAMP=$(date +%s)
+  SEVEN_DAYS_AGO=$((CURREN_TIMESTAMP - 7*24*60*60))
 
   if [ ! -d "${BASIC_DIR}" ]; then
     echo_error_basic "Directory ${BASIC_DIR} does not exist."
