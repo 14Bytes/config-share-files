@@ -58,12 +58,13 @@ function 2_confirm() {
     read -p "Do you want to delete these directories? (y/n): " CONFIRMATION
   fi
 
+  # TODO: 是一个个删除目录，且从新到旧删除，需要修改
   if [ "${CONFIRMATION}" == "y" ]; then
     for DIR_CAN_DELETE_NAME in "${DIR_CAN_DELETE_LIST[@]}"; do
       echo_alert "Deleting directory: ${DIR_CAN_DELETE_NAME}"
       rm -rf "${BASIC_DIR:?}/${DIR_CAN_DELETE_NAME}"
+      echo_info "${DIR_CAN_DELETE_NAME} Deletion complete"
     done
-    echo_info "Deletion complete"
   else
     echo_info "Deletion cancelled"
   fi
