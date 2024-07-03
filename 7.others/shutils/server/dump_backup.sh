@@ -12,10 +12,23 @@
 # Arguments:
 #  None
 
+source ../shared/current_date_dir_make.sh
 
 # 所有数据库备份
 function backup_all_DB() {
-  :
+  local MYSQLDUMP_BIN
+  local DB_USER
+  local DB_PASSWD
+  local BACKUP_DIR
+  local CURRENT_DATE
+
+  MYSQLDUMP_BIN=$1
+  DB_USER=root
+  DB_PASSWD=$2
+  BACKUP_DIR=$3
+  CURRENT_DATE=$(date +"%Y%m%d%H%M%S")
+
+  "${MYSQLDUMP_BIN}" -u"${DB_USER}" -p"${DB_PASSWD}" --all-databases > "${BACKUP_DIR}"/"${CURRENT_DATE}"/all_databases.sql
 }
 
 # 备份单独数据库
@@ -32,4 +45,9 @@ function dump_backup_test() {
   :
 }
 
-dump_backup_test "$@"
+function dump_backup_main() {
+  backup_all_DB "/usr/local/mysql8.0/bin/mysqldump" "[password]" "/data/backup"
+}
+
+# dump_backup_test "$@"
+dump_backup_main "$@"

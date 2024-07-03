@@ -26,4 +26,11 @@ function current_date_path_test() {
   make_date_dir
 }
 
-current_date_path_test "$@"
+function current_date_path_main() {
+  get_input "$1"
+  get_current_date
+  make_date_dir
+}
+
+# current_date_path_test "$@"
+current_date_path_main "$@"
