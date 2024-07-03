@@ -46,6 +46,7 @@ function dump_backup_test() {
 }
 
 function dump_backup_main() {
+  current_date_path_main "/data/backup"
   backup_all_DB "/usr/local/mysql8.0/bin/mysqldump" "[password]" "/data/backup"
 }
 
