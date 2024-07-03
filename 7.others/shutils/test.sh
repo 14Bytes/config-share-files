@@ -8,7 +8,7 @@
 # Arguments:
 #  None
 
-source ./inwaer.sh
+source ./shared/inwaer.sh
 
 function test() {
   :

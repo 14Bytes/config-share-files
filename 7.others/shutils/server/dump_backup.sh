@@ -12,13 +12,14 @@
 # Arguments:
 #  None
 
-function test() {
+function backup_all_DB() {
   :
 }
 
-function main() {
+function zip_sql() {
   :
 }
 
-test "$@"
-main "$@"
+function clean_old_zip() {
+  :
+}
