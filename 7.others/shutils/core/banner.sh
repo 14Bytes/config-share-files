@@ -19,3 +19,5 @@ function banner() {
 function banner_test() {
   banner
 }
+
+banner_test "$@"
