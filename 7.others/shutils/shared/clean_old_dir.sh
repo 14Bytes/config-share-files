@@ -26,7 +26,7 @@ function judge_dir_can_delete() {
 
   if [ ! -d "${BASIC_DIR}" ]; then
     echo_error_basic "Directory ${BASIC_DIR} does not exist."
-    # echo_error_logs "$0" "查找需要删除的目录，${BASIC_DIR}不存在"
+    echo_error_logs "$0" "查找需要删除的目录，${BASIC_DIR}不存在"
     exit 1
   fi
 
