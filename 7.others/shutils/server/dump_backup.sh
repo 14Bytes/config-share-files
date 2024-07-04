@@ -16,8 +16,8 @@ function backup_all_DB() {
   local MYSQLDUMP_BIN
   local DB_USER
   local DB_PASSWD
-  local BACKUP_DIR
-  local CURRENT_DATE
+  # local BACKUP_DIR
+  # local CURRENT_DATE
 
   MYSQLDUMP_BIN=$1
   DB_USER=root
@@ -27,8 +27,13 @@ function backup_all_DB() {
 
   echo_info "所有的数据库将会被备份"
   echo_info_logs "$0" "所有数据库被备份"
-  "${MYSQLDUMP_BIN}" -u"${DB_USER}" -p"${DB_PASSWD}" --all-databases > "${BACKUP_DIR}"/"${CURRENT_DATE}"/all_databases.sql
-  echo_info_logs "$0" "所有数据库备份成功至 ${BACKUP_DIR}/${CURRENT_DATE}/ 目录下"
+  if "${MYSQLDUMP_BIN}" -u"${DB_USER}" -p"${DB_PASSWD}" --all-databases > "${BACKUP_DIR}"/"${CURRENT_DATE}"/all_databases.sql; then
+    echo_info "所有数据库备份成功至 ${BACKUP_DIR}/${CURRENT_DATE}/ 目录下"
+    echo_info_logs "$0" "所有数据库备份成功至 ${BACKUP_DIR}/${CURRENT_DATE}/ 目录下"
+  else
+    echo_error_logs "数据库备份失败"
+    echo_error_logs "$0" "数据库备份失败"
+  fi
 }
 
 # 备份单独数据库
@@ -46,7 +51,7 @@ function dump_backup_test() {
 }
 
 function zip_dir() {
-  if tar -jcxf "${BACKUP_DIR}"/"${CURRENT_DATE}".tar.gz "${BACKUP_DIR}"/"${CURRENT_DATE}"/; then
+  if cd "${BACKUP_DIR}" && tar -jcvf "${BACKUP_DIR}/${CURRENT_DATE}".tar.bz2 "${CURRENT_DATE}/"; then
     echo_info "文件已成功压缩"
     echo_info_logs "$0" "文件已经成功压缩"
     echo_alert "${BACKUP_DIR}/${CURRENT_DATE} 目录将会被删除"
