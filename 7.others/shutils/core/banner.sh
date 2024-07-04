@@ -16,6 +16,17 @@ function banner() {
   echo -e "\033[1;33m                         \n\033[0m"
 }
 
+function logs_banner() {
+  {
+    echo "   ________ _____ ____   "
+    echo "  |___ /_ _|_   _/ ___|  "
+    echo "    |_ \| |  | | \___ \  "
+    echo "   ___) | |  | |  ___) | "
+    echo "  |____/___| |_| |____/  "
+    echo "                         "
+  } >> /tmp/shutils.log
+}
+
 function banner_test() {
   banner
 }
