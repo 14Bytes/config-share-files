@@ -12,14 +12,14 @@
 [root@localhost ~]# cat /etc/redhat-release
 CentOS Linux release 7.4.1708 (Core)
 [root@localhost ~]# ssh -V
-OpenSSH_7.4p1, OpenSSL 1.0.2k-fips  26 Jan 2017
+OpenSSH_7.4p1, OpenSSL 1.0.2k-fips 26 Jan 2017
 
 ```
 
 ### 1. 创建用户组和用户
 
 ```
-[root@localhost ~]# groupadd sftp  --创建用户组
+[root@localhost ~]# groupadd sftp --创建用户组
 [root@localhost ~]# useradd -g sftp -s /sbin/nologin sftp1 --创建用户
 [root@localhost ~]# passwd sftp1
 Changing password for user sftp1.
