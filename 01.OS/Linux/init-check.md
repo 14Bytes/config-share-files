@@ -90,9 +90,14 @@
     - [ ] 主主同步
   - [ ] 备份策略
     - [ ] mysqldump
+      - [ ] dump_backup.sh
+      - [ ] crontab -e 规则
     - [ ] XtraBackup
+      - [ ] 确定版本
+      - [ ] 全量备份脚本
+      - [ ] 增量备份脚本
 - [ ] keepalived
-  - [ ] 是否由硬件支持
+  - [ ] keepalived 脚本
 
 ## 中间件服务器
 
