@@ -29,6 +29,9 @@
 //!
 //!     只会存在一个有效答案
 
+// 哈希表
+use std::collections::HashMap;
+
 // 暴力解
 struct Solution1;
 
@@ -45,15 +48,29 @@ impl Solution1 {
     }
 }
 
+// hash 表解决
 struct Solution2;
 
 impl Solution2 {
     pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-        unreachable!()
+        let mut map = HashMap::with_capacity(nums.len());
+
+        for i in 0..nums.len() {
+            if let Some(k) = map.get(&(target - nums[i])) {
+                if *k != i {
+                    return vec![*k as i32, i as i32];
+                }
+            }
+            map.insert(nums[i], i);
+        }
+        panic!("not found")
     }
 }
 
 fn main() {
-    let ans = Solution1::two_sum(vec![2,7,11,15],9);
-    println!("{:?}", ans);
+    let ans1 = Solution1::two_sum(vec![2,7,11,15], 9);
+    println!("{:?}", ans1);
+
+    let ans2 = Solution2::two_sum(vec![2,7,11,15], 9);
+    println!("{:?}", ans2);
 }
