@@ -1,0 +1,12 @@
+[package]
+name = "H_OS"
+version = "0.1.0"
+authors = ["J1nH4ng <j1nh4ng@icloud.com>"]
+
+[dependencies]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
