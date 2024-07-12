@@ -8,7 +8,7 @@
 # Arguments:
 #  None
 
-source ../shared/current_date_dir_make.sh
+source ../core/current_date_dir_make.sh
 source ../core/inwaer_logs.sh
 
 # 所有数据库备份

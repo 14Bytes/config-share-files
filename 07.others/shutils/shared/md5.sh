@@ -19,7 +19,7 @@ function init_dir_md5() {
 }
 
 function check_md5() {
-  md5sum -c md5.txt >> md5.check
+  md5sum -c "$1.md5" > md5.check
 }
 
 function md5_test() {
