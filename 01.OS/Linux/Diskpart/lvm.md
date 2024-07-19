@@ -51,7 +51,7 @@ vgextend klas /dev/vdb
 
 lvextend -l +100%FREE /dev/mapper/klas-data
 
-# 调节文件曦太
+# 调节文件系统
 xfs_growfs /dev/mapper/klas-data
 # or
 resize2fs /dev/mapper/klas-data
