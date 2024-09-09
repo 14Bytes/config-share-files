@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: default
+  labels:
+    name: postgresql
+spec:
+  selector:
+    matchLabels:
+      name: postgresql
+  template:
+    metadata:
+      name: postgresql
+      labels:
+        name: postgresql
+    spec:
+      containers:
+        - name: postgresql
+          image: bitnami/postgres:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: trust
+            - name: DB_USER
+              value: gitlab
+            - name: DB_PASS
+              value: TChcAuTV1&T6
+            - name: DB_NAME
+              value: gitlab_production
+            - name: DB_EXTENSION
+              value: pg_trgm
+          ports:
+            - name: postgres
+              containerPort: 5432
+          volumeMounts:
+            - mountPath: /data/k8s-gitlab/postgresql
+              name: data
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -h
+                - localhost
+                - -U
+                - postgres
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -h
+                - localhost
+                - -U
+                - postgres
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+      volumes:
+        - name: data
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: default
+  labels:
+    name: postgresql
+spec:
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+  selector:
+    name: postgresql
